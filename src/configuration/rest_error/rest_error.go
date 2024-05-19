@@ -6,7 +6,7 @@ type RestErr struct {
 	Message string   `json:"message"`
 	Err     string   `json:"error"`
 	Code    int      `json:"code"`
-	Causes  []Causes `json:"causes,omitempty"`
+	Causes  []Causes `json:"causes"`
 }
 
 type Causes struct {
@@ -18,20 +18,19 @@ func (r *RestErr) Error() string {
 	return r.Message
 }
 
-func NewRestErr(message, err string, code int, causes []Causes) *RestErr {
-	return &RestErr{
-		Message: message,
-		Err:     err,
-		Code:    code,
-		Causes:  causes,
-	}
-}
-
 func NewBadRequestError(message string) *RestErr {
 	return &RestErr{
 		Message: message,
 		Err:     "bad_request",
 		Code:    http.StatusBadRequest,
+	}
+}
+
+func NewUnauthorizedRequestError(message string) *RestErr {
+	return &RestErr{
+		Message: message,
+		Err:     "unauthorized",
+		Code:    http.StatusUnauthorized,
 	}
 }
 
